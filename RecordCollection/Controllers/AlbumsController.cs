@@ -18,17 +18,7 @@ namespace RecordCollection.Controllers
     {
       return View(_db.Albums.ToList());
     }
-    // public ActionResult Create()
-    // {
-    //   return View();
-    // }
-    // [HttpPost] 
-    // public ActionResult Create(Album album)
-    // {
-    //   _db.Albums.Add(album);
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Index");
-    // }
+
     public ActionResult Details(int id)
     {
       var thisAlbum = _db.Albums
@@ -60,7 +50,29 @@ namespace RecordCollection.Controllers
       ViewBag.ArtistId = new SelectList(_db.Artists, "ArtistId", "Artists");
       return View(thisAlbum);
     }
-    
-
+    [HttpPost]
+    public ActionResult Edit(Album album, int ArtistId)
+    {
+      if (ArtistId != 0)
+      {
+        _db.ArtistAlbum.Add(new ArtistAlbum() { ArtistId = ArtistId, AlbumId = album.AlbumId});
+      }
+      _db.Entry(album).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+    public ActionResult Delete(int id)
+    {
+      var thisAlbum = _db.Albums.FirstOrDefault(albums => albums.AlbumId == id);
+      return View(thisAlbum);
+    }
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      var thisAlbum = _db.Albums.FirstOrDefault(albums => albums.AlbumId == id);
+      _db.Albums.Remove(thisAlbum);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
