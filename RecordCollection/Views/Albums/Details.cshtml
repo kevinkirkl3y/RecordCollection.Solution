@@ -1,0 +1,34 @@
+@{
+  Layout = "_Layout";
+}
+<div class="container">
+  @model RecordCollection.Models.Album
+
+  <h2>Album Details</h2>
+  <hr /> 
+  <h4>Title: @Html.DisplayFor(model => model.AlbumName)</h4>
+  <h4>Pressing Number: @Html.DisplayFor(model => model.PressNumber)</h4>
+  @if(@Model.Artist.Count == 0)
+  {
+    <h3>No contributing artists have been logged.</h3>
+  }
+  else
+  {
+    <h3>Contributing Artists:</h3>
+    <ul>
+      @foreach (var join in Model.Artists)
+      {
+          <li>@join.Artist.ArtistName</li>
+          @using (Html.BeginForm("DeleteArtist", "Albums"))
+          {
+            @Html.Hidden("joinId", @join.ArtistAlbumId)
+            <input type="submit" value="Delete"/>
+          }
+      }
+    </ul>
+  }
+  <br><p>@Html.ActionLink("Back to Album list", "Index")</p>
+  <br><p>@Html.ActionLink("Edit Album", "Edit", new {id = Model.AlbumId})</p>\
+  <br><p>@Html.ActionLink("Remove Album", "Delete", new {id = Model.AlbumId})</p>
+  <br><p>@Html.ActionLink("Add Contributing Artist", "AddArtist", new {id = Model.AlbumId})</p>
+</div>

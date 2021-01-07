@@ -1,0 +1,26 @@
+@{
+  Layout = "_Layout";
+}
+<div class="container">
+  @model RecordCollection.Models.Album
+<h2>Log Album:</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.AlbumId)
+
+  @Html.LabelFor(model => model.AlbumName)<br>
+  @Html.TextBoxFor(model => model.AlbumName)<br>
+
+  @Html.LabelFor(model => model.PressNumber)<br>
+  @Html.TextBoxFor(model => model.PressNumber)<br>
+
+  @Html.Label("Assign Contributing Artist")<br>
+  @Html.DropDownList("ArtistId")
+
+  <br><br><input type="submit" value="Save" />
+}
+<br><p>@Html.ActionLink("Back to Album list", "Index")</p>
+
+</div>
